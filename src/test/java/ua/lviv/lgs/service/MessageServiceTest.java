@@ -58,4 +58,11 @@ class MessageServiceTest {
         Assertions.assertEquals("Hello Admin", adminMessage);
     }
 
+    @Test
+    void generateMessageForAdmin_ReturnHelloUserName(){
+        Mockito.when(userService.getUserName()).thenReturn("Sasha");
+        String userMessage = messageService.generateMessageForUser();
+        Assertions.assertEquals("Hello user Sasha", userMessage);
+    }
+
 }
