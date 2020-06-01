@@ -17,4 +17,8 @@ public class MessageService {
         return "Hello " + adminName;
     }
 
+    public String generateMessageForUser(){
+        return "Hello user " + userService.getUserName();
+    }
+
 }

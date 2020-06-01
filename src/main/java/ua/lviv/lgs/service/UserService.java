@@ -5,4 +5,8 @@ public class UserService {
     public String getAdminName() {
         return "Admin";
     }
+
+    public String getUserName() {
+        return "Niklaz";
+    }
 }
