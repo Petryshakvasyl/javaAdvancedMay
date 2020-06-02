@@ -43,7 +43,6 @@ class UserServiceTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = Status.class, names = {"NEW", "ACTIVE"})
     @CsvSource({"a1, b1, c1",
             "a2, b2, c2"
     })
