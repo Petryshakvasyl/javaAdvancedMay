@@ -1,6 +1,6 @@
 package ua.lviv.lgs.service;
 
-import com.mysql.cj.jdbc.Driver;
+import org.apache.log4j.Logger;
 import ua.lviv.lgs.eintity.User;
 
 import java.sql.*;
@@ -9,12 +9,14 @@ import java.util.List;
 
 public class Main {
 
+    private static final Logger log = Logger.getLogger(Main.class);
     private static final String url = "jdbc:mysql://localhost:3306/demo?serverTimezone=UTC";
-                                     //jdbc:mysql://localhost:3306/airport?serverTimezone=UTC
     private static final String user = "db_user";
     private static final String password = "db_pass";
 
     public static void main(String[] args) {
+
+        log.info("start main");
         try (Connection connection = DriverManager.getConnection(url, user, password);
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM user");
