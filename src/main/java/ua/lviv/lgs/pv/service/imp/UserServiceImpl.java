@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
         bucketRepository.save(bucket);
         user.setBucketId(bucket.getId());
         log.debug("save new user " + user);
+        user.setRole("USER");
         userRepository.save(user);
     }
 

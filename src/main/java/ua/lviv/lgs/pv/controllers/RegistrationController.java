@@ -16,36 +16,49 @@ import java.util.Optional;
 @WebServlet("/registration")
 public class RegistrationController extends HttpServlet {
 
-    private final Logger log = Logger.getLogger(RegistrationController.class);
+    private static final Logger LOG = Logger.getLogger(RegistrationController.class);
 
     private UserService userService;
 
     public RegistrationController() {
-        userService = UserServiceImpl.getInstance();
+        this.userService = UserServiceImpl.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("get request");
         req.getRequestDispatcher("registration.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("post request");
-
+        String firstName = req.getParameter("firstName");
+        String lastName = req.getParameter("lastName");
         String email = req.getParameter("email");
-        Optional<User> fromDB = userService.findByEmail(email);
-        if (fromDB.isPresent()) {
-            resp.setStatus(422);
-        } else {
-            String firstName = req.getParameter("firstName");
-            String lastName = req.getParameter("lastName");
-            String password = req.getParameter("password");
-            User user = new User(firstName, lastName, email, "USER", password);
-            log.debug("create new user " + user);
-            userService.save(user);
+        String password = req.getParameter("password");
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(password);
+
+        if (isValidUser(user)) {
+            Optional<User> userByEmail = userService.findByEmail(email);
+            if (userByEmail.isPresent()) {
+                resp.setStatus(422);
+            }else {
+                userService.save(user);
+                resp.sendRedirect("/login");
+            }
+        }else {
+            LOG.warn("invalid input data");
+            resp.setStatus(400);
         }
-        req.getRequestDispatcher("login.jsp").forward(req, resp);
+    }
+
+    private boolean isValidUser(User user) {
+        return user.getPassword() != null
+                && user.getEmail() != null
+                && user.getFirstName() != null
+                && user.getLastName() != null;
     }
 }

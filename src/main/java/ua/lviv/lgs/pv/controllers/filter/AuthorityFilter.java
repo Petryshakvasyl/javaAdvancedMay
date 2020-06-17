@@ -24,12 +24,12 @@ public class AuthorityFilter implements Filter {
         log.info("filter log in");
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpSession session = httpRequest.getSession();
-        boolean isLoggedIn = session != null && session.getAttribute("userEmail") != null;
+        boolean isLoggedIn = session != null && session.getAttribute("email") != null;
         boolean isLoginPage = httpRequest.getRequestURI().endsWith("login");
         boolean isRegistrationPage = httpRequest.getRequestURI().endsWith("registration");
         if (isLoggedIn) {
             if (isLoginPage || isRegistrationPage) {
-                httpRequest.getRequestDispatcher("home.jsp").forward(request, response);
+                ((HttpServletResponse)response).sendRedirect("/home");
             } else {
                 chain.doFilter(request, response);
             }
@@ -37,7 +37,6 @@ public class AuthorityFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             ((HttpServletResponse) response).sendRedirect("/login");
-//            httpRequest.getRequestDispatcher("/login").forward(request, response);
         }
     }
 

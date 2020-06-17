@@ -6,10 +6,11 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>IShop</title>
+    <title>Ishop</title>
     <link rel="stylesheet" href="resources/css/style.css">
 </head>
 <div class="center">
-    <h3> Welcome to home page ${email}</h3>
+    <h3> Welcome to admin page ${email}</h3>
+    <p>You can more than usual user</p>
 </div>
 <body>
