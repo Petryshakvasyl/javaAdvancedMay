@@ -12,6 +12,8 @@ public class Product {
 
     private BigDecimal price;
 
+    private Long count;
+
     public Product() {
     }
 
@@ -53,6 +55,14 @@ public class Product {
         this.price = price;
     }
 
+    public Long getCount() {
+        return count;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -60,6 +70,7 @@ public class Product {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
+                ", count=" + count +
                 '}';
     }
 }
