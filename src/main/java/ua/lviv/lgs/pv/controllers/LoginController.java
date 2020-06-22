@@ -41,6 +41,7 @@ public class LoginController extends HttpServlet {
                 if (password.equals(user.getPassword())) {
                     req.getSession().setAttribute("email", email);
                     req.getSession().setAttribute("role", user.getRole());
+                    req.getSession().setAttribute("basketId", user.getBucketId());
                     resp.sendRedirect("/home");
                 } else {
                     LOG.warn("invalid password");

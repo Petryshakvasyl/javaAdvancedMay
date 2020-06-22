@@ -14,4 +14,8 @@
     <h3> Welcome to admin page ${email}</h3>
     <p>You can more than usual user</p>
 </div>
+
+<div class="container">
+    THis is container
+</div>
 <body>

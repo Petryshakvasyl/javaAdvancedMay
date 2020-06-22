@@ -16,11 +16,12 @@
     <title><i class="fas fa-apple-alt"></i></title>
 </head>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <a class="navbar-brand" href="#"><h3 class="fas fa-apple-alt"></h3> </a>
+        <a class="navbar-brand" href="#"><h3 class="fas fa-apple-alt"></h3></a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item active">
                 <a class="nav-link" href="/product-list">Products <span class="sr-only">(current)</span></a>
@@ -28,15 +29,22 @@
             <li class="nav-item active">
                 <a class="nav-link" href="#">About</a>
             </li>
+            <c:if test="${role == 'ADMIN'}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/admin/product">Create product</a>
+                </li>
+            </c:if>
         </ul>
         <c:choose>
             <c:when test="${email != null}">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#"><i class="fas fa-lg fa-shopping-cart">${busketCount > 0? busketCount: ""}</i></a>
+                        <a class="nav-link active" href="#"><i
+                                class="fas fa-lg fa-shopping-cart">${busketCount > 0? busketCount: ""}</i></a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-lg fa-user-circle"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -48,11 +56,11 @@
                 </ul>
             </c:when>
             <c:otherwise>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link active" href="${pageContext.request.contextPath}/login">Sign in</a>
-            </li>
-        </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="${pageContext.request.contextPath}/login">Sign in</a>
+                    </li>
+                </ul>
             </c:otherwise>
         </c:choose>
     </div>

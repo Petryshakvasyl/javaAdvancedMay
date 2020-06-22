@@ -3,7 +3,6 @@ package ua.lviv.lgs.pv.repository.impl;
 import org.apache.log4j.Logger;
 import ua.lviv.lgs.pv.config.ConnectionManager;
 import ua.lviv.lgs.pv.entity.User;
-import ua.lviv.lgs.pv.repository.BucketRepository;
 import ua.lviv.lgs.pv.repository.UserRepository;
 
 import java.sql.Connection;

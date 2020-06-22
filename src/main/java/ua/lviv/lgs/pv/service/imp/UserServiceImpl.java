@@ -3,9 +3,9 @@ package ua.lviv.lgs.pv.service.imp;
 import org.apache.log4j.Logger;
 import ua.lviv.lgs.pv.entity.Bucket;
 import ua.lviv.lgs.pv.entity.User;
-import ua.lviv.lgs.pv.repository.BucketRepository;
+import ua.lviv.lgs.pv.repository.BasketRepository;
 import ua.lviv.lgs.pv.repository.UserRepository;
-import ua.lviv.lgs.pv.repository.impl.BucketRepositoryImpl;
+import ua.lviv.lgs.pv.repository.impl.BasketRepositoryImpl;
 import ua.lviv.lgs.pv.repository.impl.UserRepositoryImpl;
 import ua.lviv.lgs.pv.service.UserService;
 
@@ -19,18 +19,18 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-    private BucketRepository bucketRepository;
+    private BasketRepository basketRepository;
 
     private static UserServiceImpl instance;
 
-    private UserServiceImpl(UserRepository userRepository, BucketRepository bucketRepository) {
+    private UserServiceImpl(UserRepository userRepository, BasketRepository basketRepository) {
         this.userRepository = userRepository;
-        this.bucketRepository = bucketRepository;
+        this.basketRepository = basketRepository;
     }
 
     public static UserServiceImpl getInstance() {
         if (instance == null) {
-            instance = new UserServiceImpl(UserRepositoryImpl.getInstance(), BucketRepositoryImpl.getInstance());
+            instance = new UserServiceImpl(UserRepositoryImpl.getInstance(), BasketRepositoryImpl.getInstance());
         }
         return instance;
     }
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     public void save(User user) {
         Bucket bucket = new Bucket();
         bucket.setPurchaseDate(LocalDate.now());
-        bucketRepository.save(bucket);
+        basketRepository.save(bucket);
         user.setBucketId(bucket.getId());
         log.debug("save new user " + user);
         user.setRole("USER");

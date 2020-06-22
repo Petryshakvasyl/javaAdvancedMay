@@ -27,13 +27,14 @@ public class AuthorityFilter implements Filter {
         boolean isLoggedIn = session != null && session.getAttribute("email") != null;
         boolean isLoginPage = httpRequest.getRequestURI().endsWith("login");
         boolean isRegistrationPage = httpRequest.getRequestURI().endsWith("registration");
+        boolean isProductsPage = httpRequest.getRequestURI().endsWith("product-list");
         if (isLoggedIn) {
             if (isLoginPage || isRegistrationPage) {
                 ((HttpServletResponse)response).sendRedirect("/home");
             } else {
                 chain.doFilter(request, response);
             }
-        } else if (isLoginPage || isRegistrationPage) {
+        } else if (isLoginPage || isRegistrationPage || isProductsPage) {
             chain.doFilter(request, response);
         } else {
             ((HttpServletResponse) response).sendRedirect("/login");

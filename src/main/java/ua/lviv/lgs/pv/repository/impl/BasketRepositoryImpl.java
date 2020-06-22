@@ -3,28 +3,28 @@ package ua.lviv.lgs.pv.repository.impl;
 import org.apache.log4j.Logger;
 import ua.lviv.lgs.pv.config.ConnectionManager;
 import ua.lviv.lgs.pv.entity.Bucket;
-import ua.lviv.lgs.pv.entity.User;
-import ua.lviv.lgs.pv.repository.BucketRepository;
+import ua.lviv.lgs.pv.entity.Product;
+import ua.lviv.lgs.pv.repository.BasketRepository;
 
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
-public class BucketRepositoryImpl implements BucketRepository {
+public class BasketRepositoryImpl implements BasketRepository {
 
-    private static final Logger LOG = Logger.getLogger(BucketRepositoryImpl.class);
+    private static final Logger LOG = Logger.getLogger(BasketRepositoryImpl.class);
 
     private Connection connection;
 
-    private BucketRepositoryImpl() {
+    private BasketRepositoryImpl() {
         this.connection = ConnectionManager.createConnection();
     }
 
-    private static BucketRepositoryImpl instance;
+    private static BasketRepositoryImpl instance;
 
-    public static BucketRepositoryImpl getInstance() {
+    public static BasketRepositoryImpl getInstance() {
         if (instance == null) {
-            instance = new BucketRepositoryImpl();
+            instance = new BasketRepositoryImpl();
         }
         return instance;
     }
@@ -62,5 +62,20 @@ public class BucketRepositoryImpl implements BucketRepository {
     @Override
     public void deleteById(Integer integer) {
 
+    }
+
+    @Override
+    public void addProductToBasket(Long productId, Integer productCount, Long basketId) {
+
+    }
+
+    @Override
+    public List<Product> findByBasketId(Long basketId) {
+        return null;
+    }
+
+    @Override
+    public int getProductsCountInBasket(Long basketId) {
+        return 0;
     }
 }
