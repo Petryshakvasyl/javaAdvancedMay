@@ -2,9 +2,13 @@ package ua.lviv.lgs.pv.repository.impl;
 
 import org.apache.log4j.Logger;
 import ua.lviv.lgs.pv.config.ConnectionManager;
+import ua.lviv.lgs.pv.config.ManagerFactory;
 import ua.lviv.lgs.pv.entity.User;
 import ua.lviv.lgs.pv.repository.UserRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,150 +23,74 @@ public class UserRepositoryImpl implements UserRepository {
 
     private static UserRepositoryImpl instance;
 
-    private Connection connection;
+    private EntityManager em;
 
-    private UserRepositoryImpl(Connection connection) {
-        this.connection = connection;
+    private UserRepositoryImpl(EntityManager em) {
+        this.em = em;
     }
 
     public static UserRepositoryImpl getInstance() {
         if (instance == null) {
-            instance = new UserRepositoryImpl(ConnectionManager.createConnection());
+            instance = new UserRepositoryImpl(ManagerFactory.createEntityManager());
         }
         return instance;
     }
 
     @Override
     public void save(User user) {
-        try (PreparedStatement statement = connection.prepareStatement(
-                "insert into users (first_name, last_name, email, password, role, bucket_id) value (?, ?, ?, ?, ?,?)")) {
-            statement.setString(1, user.getFirstName());
-            statement.setString(2, user.getLastName());
-            statement.setString(3, user.getEmail());
-            statement.setString(4, user.getPassword());
-            statement.setString(5, user.getRole());
-            statement.setInt(6, user.getBucketId());
-            statement.execute();
-        } catch (SQLException e) {
-            log.error("error while saving user" + user, e);
-        }
+        em.persist(user);
     }
 
     @Override
     public void update(User user) {
 
-        try (PreparedStatement statement = connection.prepareStatement(
-                "update users set first_name =?, last_name=?, email=?, password=?, role=? where id =?")) {
-            statement.setString(1, user.getFirstName());
-            statement.setString(2, user.getLastName());
-            statement.setString(3, user.getEmail());
-            statement.setString(4, user.getPassword());
-            statement.setString(5, user.getRole());
-            statement.setInt(6, user.getId());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            log.error("error while updating user " + user, e);
-        }
+//        try (PreparedStatement statement = connection.prepareStatement(
+//                "update users set first_name =?, last_name=?, email=?, password=?, role=? where id =?")) {
+//            statement.setString(1, user.getFirstName());
+//            statement.setString(2, user.getLastName());
+//            statement.setString(3, user.getEmail());
+//            statement.setString(4, user.getPassword());
+//            statement.setString(5, user.getRole());
+//            statement.setInt(6, user.getId());
+//            statement.executeUpdate();
+//        } catch (SQLException e) {
+//            log.error("error while updating user " + user, e);
+//        }
     }
 
     @Override
     public List<User> findAll() {
-        List<User> result = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement("select * from users");
-             ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) {
-                result.add(mapToUser(resultSet));
-            }
-        } catch (SQLException e) {
-            log.error("error while getting all users", e);
-        }
-        return result;
+        Query query = em.createQuery("select u from User u");
+        List<User> resultList = query.getResultList();
+        return resultList;
     }
 
     @Override
     public Optional<User> findById(Integer id) {
-        User user = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement("select * from users where id = ?");
-            statement.setInt(1, id);
-            resultSet = statement.executeQuery();
-            resultSet.next();
-            user = mapToUser(resultSet);
-        } catch (SQLException e) {
-            log.error("error while getting user by id: " + id, e);
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ignore) {
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException ignore) {
-                }
-            }
-        }
+        User user = em.find(User.class, id);
         return Optional.ofNullable(user);
-    }
-
-    private User mapToUser(ResultSet resultSet) throws SQLException {
-        User user = new User();
-        Integer id = resultSet.getInt("id");
-        String email = resultSet.getString("email");
-        String firstName = resultSet.getString("first_name");
-        String lastName = resultSet.getString("last_name");
-        String role = resultSet.getString("role");
-        String password = resultSet.getString("password");
-        user.setId(id);
-        user.setEmail(email);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setPassword(password);
-        user.setRole(role);
-        return user;
     }
 
     @Override
     public void deleteById(Integer id) {
-        try (PreparedStatement statement = connection.prepareStatement("delete from users where id = ?")) {
-            statement.setInt(1, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            log.error("error while deleting user by id: " + id, e);
-        }
+//        try (PreparedStatement statement = connection.prepareStatement("delete from users where id = ?")) {
+//            statement.setInt(1, id);
+//            statement.executeUpdate();
+//        } catch (SQLException e) {
+//            log.error("error while deleting user by id: " + id, e);
+//        }
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        User user = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement("select * from users where email = ?");
-            statement.setString(1, email);
-            resultSet = statement.executeQuery();
-            resultSet.next();
-            user = mapToUser(resultSet);
-        } catch (SQLException e) {
-            log.error("error while getting user by email: " + email, e);
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ignore) {
-                }
-            }
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException ignore) {
-                }
-            }
-        }
+
+//        Query nativeQuery = em.createNativeQuery("select * from users where email = ?", User.class);
+//        nativeQuery.setParameter(1, email);
+//        User result = (User) nativeQuery.getSingleResult();
+//        return Optional.ofNullable(result);
+        TypedQuery<User> query = em.createQuery("select u from User u where u.email = ?1", User.class);
+        query.setParameter(1, email);
+        User user = query.getSingleResult();
         return Optional.ofNullable(user);
     }
 }
