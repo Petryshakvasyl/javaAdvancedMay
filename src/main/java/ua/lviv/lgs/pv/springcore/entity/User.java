@@ -1,97 +1,41 @@
 package ua.lviv.lgs.pv.springcore.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+
+@Entity
+@Table(name = "user")
 public class User {
 
-    private Integer id;
-
+    @Id
+    @GeneratedValue
+    private Long id;
+    @Column(name = "first_name", nullable = false)
     private String firstName;
-
+    @Column(name = "last_name", nullable = false)
     private String lastName;
+    @Column(nullable = false, unique = true)
+    private String username;
 
-    private String email;
-
-    private String role;
-
+    @Column(nullable = false)
     private String password;
 
-    private Integer bucketId;
+    @Column(nullable = false, unique = true)
+    private String email;
 
-    public User() {
-    }
+    // TODO: add currentMoneyAccount and all money accounts
 
-    public User(String firstName, String lastName, String email, String role, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
-        this.password = password;
-    }
+    // TODO: add categories
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Integer getBucketId() {
-        return bucketId;
-    }
-
-    public void setBucketId(Integer bucketId) {
-        this.bucketId = bucketId;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
 }
