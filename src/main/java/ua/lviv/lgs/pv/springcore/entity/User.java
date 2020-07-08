@@ -34,8 +34,16 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    // TODO: add currentMoneyAccount and all money accounts
+    @OneToOne
+    private MoneyAccount currentAccout;
 
-    // TODO: add categories
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private Set<MoneyAccount> moneyAccounts = new HashSet<>();
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private Set<Category> categories = new HashSet<>();
+
 
 }

@@ -27,5 +27,7 @@ public class MoneyAccount {
     private Instant initialDate;
 
     // TODO: 08.07.2020 add Currency
+    @OneToOne
+    private Currency currency;
 
 }
