@@ -45,3 +45,8 @@ public class CategoryController {
         return "category-view";
     }
 }
+
+// create transaction controller
+// create method getTransactions(Type type)
+// create method getTransaction(Long id)
+// create two jsp files: transaction, and transaction-list
