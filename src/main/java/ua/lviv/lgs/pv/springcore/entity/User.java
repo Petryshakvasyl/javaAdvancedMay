@@ -35,7 +35,7 @@ public class User {
     private String email;
 
     @OneToOne
-    private MoneyAccount currentAccout;
+    private MoneyAccount currentAccount;
 
     @OneToMany
     @JoinColumn(name = "user_id")

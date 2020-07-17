@@ -1,17 +1,52 @@
 package ua.lviv.lgs.pv.springcore.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.lviv.lgs.pv.springcore.dto.TransactionDTO;
-import ua.lviv.lgs.pv.springcore.entity.Type;
+import ua.lviv.lgs.pv.springcore.entity.*;
+import ua.lviv.lgs.pv.springcore.error.ResourceNotFoundException;
+import ua.lviv.lgs.pv.springcore.repository.CategoryRepository;
+import ua.lviv.lgs.pv.springcore.repository.TransactionRepository;
+import ua.lviv.lgs.pv.springcore.repository.UserRepository;
 import ua.lviv.lgs.pv.springcore.service.TransactionService;
+import ua.lviv.lgs.pv.springcore.service.mapper.TransactionMapper;
+
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
+    private final UserRepository userRepository;
+
+    private final TransactionMapper transactionMapper;
+
+    private final CategoryRepository categoryRepository;
+
+    private final TransactionRepository transactionRepository;
+
+    @Autowired
+    public TransactionServiceImpl(UserRepository userRepository,
+                                  TransactionMapper transactionMapper,
+                                  CategoryRepository categoryRepository,
+                                  TransactionRepository transactionRepository) {
+        this.userRepository = userRepository;
+        this.transactionMapper = transactionMapper;
+        this.categoryRepository = categoryRepository;
+        this.transactionRepository = transactionRepository;
+    }
+
     @Override
-    public TransactionDTO createInCurrentUserAccount(TransactionDTO transaction, Long userId) {
-        return null;
+    @Transactional
+    public TransactionDTO createInCurrentUserAccount(TransactionDTO transactionDTO, Long userId) {
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
+        MoneyAccount currentAccount = currentUser.getCurrentAccount();
+        Transaction transaction = transactionMapper.toEntity(transactionDTO);
+        Category category = categoryRepository.findById(transactionDTO.getCategoryId()).orElseThrow(() ->
+                new ResourceNotFoundException(transactionDTO.getCategoryId()));
+        transaction.setCategory(category);
+        transaction.setMoneyAccount(currentAccount);
+        return transactionMapper.toDTO(transactionRepository.save(transaction));
     }
 
     @Override
