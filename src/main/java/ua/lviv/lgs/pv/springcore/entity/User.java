@@ -45,5 +45,8 @@ public class User {
     @JoinColumn(name = "user_id")
     private Set<Category> categories = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable
+    private Set<Role> roles = new HashSet<>();
 
 }
