@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ua.lviv.lgs.pv.springcore.dto.CategoryDTO;
 import ua.lviv.lgs.pv.springcore.entity.Category;
 import ua.lviv.lgs.pv.springcore.entity.Type;
 import ua.lviv.lgs.pv.springcore.service.CategoryService;
@@ -28,7 +29,7 @@ public class CategoryController {
     }
 
     @PostMapping("/category")
-    public String createCategoryPage(@ModelAttribute("category") Category category) {
+    public String createCategoryPage(@ModelAttribute("category") CategoryDTO category) {
         return "category";
     }
 

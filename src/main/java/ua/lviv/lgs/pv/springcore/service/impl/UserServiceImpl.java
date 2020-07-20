@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO createUser(UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
         MoneyAccount defaultMoneyAccount = moneyAccountService.createDefault();
-        user.setCurrentAccout(defaultMoneyAccount);
+        user.setCurrentAccount(defaultMoneyAccount);
         user.getMoneyAccounts().add(defaultMoneyAccount);
         return userMapper.toDto(userRepository.save(user));
     }
