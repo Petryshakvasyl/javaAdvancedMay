@@ -1,13 +1,11 @@
 package ua.lviv.lgs.pv.springcore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ua.lviv.lgs.pv.springcore.dto.CategoryDTO;
 import ua.lviv.lgs.pv.springcore.dto.TransactionDTO;
 import ua.lviv.lgs.pv.springcore.entity.Type;
@@ -47,5 +45,12 @@ public class TransactionController {
         //todo change to real user id
         transactionService.createInCurrentUserAccount(transactionDTO, 11L);
         return "success";
+    }
+
+    @GetMapping
+    @ResponseBody
+    @Secured("ROLE_ADMIN")
+    public String adminOnly() {
+        return "This can bt just admin";
     }
 }
