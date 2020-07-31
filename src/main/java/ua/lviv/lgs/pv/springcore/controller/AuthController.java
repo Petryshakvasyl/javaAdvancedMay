@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ua.lviv.lgs.pv.springcore.dto.UserDTO;
 import ua.lviv.lgs.pv.springcore.service.UserService;
 
+import java.security.Principal;
+
 @Controller
 public class AuthController {
 
@@ -18,7 +20,10 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String getLoginPage() {
+    public String getLoginPage(Principal principal) {
+        if (principal != null) {
+            return "redirect:home";
+        }
         return "login";
     }
 

@@ -16,21 +16,21 @@
                 <td>${transaction.amount}</td>
                 <td>${transaction.date}</td>
                 <td>${transaction.description}</td>
-                <td>${transaction.category.name}</td>
-                <td><img src="/transaction/${transaction.id}/check"></td>
+<%--                <td>${transaction.category.name}</td>--%>
+<%--                <td><img src="/transaction/${transaction.id}/check"></td>--%>
             </tr>
         </c:forEach>
     </table>
 
     <%--For displaying Previous link except for the 1st page --%>
     <c:if test="${transactions.hasPrevious()}">
-        <td><a href="/transactions/list?type=${type}&page=${incomePage.getPageable().getPageNumber()-1}">Previous</a>
+        <td><a href="/transactions/list?type=${type}&page=${incomePage.getPageable().getPageNumber()-1}&size=3">Previous</a>
         </td>
     </c:if>
 
     <%--For displaying Next link --%>
     <c:if test="${transactions.hasNext()}">
-        <td><a href="/transactions/list?type=${type}&page=${incomePage.getPageable().getPageNumber()+1}">Next</a></td>
+        <td><a href="/transactions/list?type=${type}&page=${incomePage.getPageable().getPageNumber()+1}&size=3">Next</a></td>
     </c:if>
 
 

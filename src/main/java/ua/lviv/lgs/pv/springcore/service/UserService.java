@@ -6,4 +6,5 @@ public interface UserService {
 
     UserDTO createUser(UserDTO user);
 
+    UserDTO findByUserName(String name);
 }

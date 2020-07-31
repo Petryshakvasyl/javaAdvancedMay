@@ -1,8 +1,10 @@
 package ua.lviv.lgs.pv.springcore.service.impl;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.lviv.lgs.pv.springcore.dto.TransactionDTO;
@@ -13,6 +15,8 @@ import ua.lviv.lgs.pv.springcore.repository.TransactionRepository;
 import ua.lviv.lgs.pv.springcore.repository.UserRepository;
 import ua.lviv.lgs.pv.springcore.service.TransactionService;
 import ua.lviv.lgs.pv.springcore.service.mapper.TransactionMapper;
+
+import java.util.Optional;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -76,6 +80,13 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Page<TransactionDTO> findTypeForCurrentUser(Type type, Pageable pageable) {
-        return null;
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userRepository.findByUsername(currentUsername)
+                .orElseThrow(() -> new ResourceNotFoundException(currentUsername));
+
+        Long moneyAccountId = currentUser.getCurrentAccount().getId();
+        return transactionRepository.findByTypeAndMoneyAccountId(type, moneyAccountId, pageable)
+                .map(transactionMapper::toDTO);
+
     }
 }

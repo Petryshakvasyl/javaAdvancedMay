@@ -37,12 +37,19 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDTO createUser(UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
-        Role role = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new ResourceNotFoundException("not found role ROLE_USER"));
+        Role role = roleRepository.findByName("ROLE_USER").orElseThrow(() ->
+                new ResourceNotFoundException("not found role ROLE_USER"));
         user.getRoles().add(role);
 //        user.setPassword(encoder.encode(user.getPassword()));
         MoneyAccount defaultMoneyAccount = moneyAccountService.createDefault();
         user.setCurrentAccount(defaultMoneyAccount);
         user.getMoneyAccounts().add(defaultMoneyAccount);
         return userMapper.toDto(userRepository.save(user));
+    }
+
+    @Override
+    public UserDTO findByUserName(String username) {
+        return userMapper.toDto(userRepository.findByUsername(username).orElseThrow(() ->
+                new ResourceNotFoundException("not found user with username: " + username)));
     }
 }
