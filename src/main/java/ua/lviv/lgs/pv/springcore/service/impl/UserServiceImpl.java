@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findByName("ROLE_USER").orElseThrow(() ->
                 new ResourceNotFoundException("not found role ROLE_USER"));
         user.getRoles().add(role);
-//        user.setPassword(encoder.encode(user.getPassword()));
+        user.setPassword(encoder.encode(user.getPassword()));
         MoneyAccount defaultMoneyAccount = moneyAccountService.createDefault();
         user.setCurrentAccount(defaultMoneyAccount);
         user.getMoneyAccounts().add(defaultMoneyAccount);
@@ -51,5 +51,20 @@ public class UserServiceImpl implements UserService {
     public UserDTO findByUserName(String username) {
         return userMapper.toDto(userRepository.findByUsername(username).orElseThrow(() ->
                 new ResourceNotFoundException("not found user with username: " + username)));
+    }
+
+    @Override
+    public byte[] getUserAvatar(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() ->
+            new ResourceNotFoundException("not found user with username: " + username))
+            .getAvatar();
+    }
+
+    @Override
+    public void uploadUserAvatar(String username, byte[] avatar) {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+            new ResourceNotFoundException("not found user with username: " + username));
+        user.setAvatar(avatar);
+        userRepository.save(user);
     }
 }

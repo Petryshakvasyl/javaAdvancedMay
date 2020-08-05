@@ -7,4 +7,8 @@ public interface UserService {
     UserDTO createUser(UserDTO user);
 
     UserDTO findByUserName(String name);
+
+    byte[] getUserAvatar(String username);
+
+    void uploadUserAvatar(String username, byte[] avatar);
 }

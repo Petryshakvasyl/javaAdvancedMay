@@ -49,4 +49,8 @@ public class User {
     @JoinTable
     private Set<Role> roles = new HashSet<>();
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte [] avatar;
+
 }

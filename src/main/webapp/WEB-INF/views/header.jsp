@@ -66,10 +66,14 @@
             </li>
         </ul>
         <sec:authorize access="isAuthenticated()">
-        <div class="navbar-text">
-            <a class="navbar-text nav-link" href="/logout"><spring:message
-                    code="navbar.logout"/></a>
-        </div>
+            <a class="navbar-brand" rel="home" href="${contextPath}/profile" title="">
+                <img style="max-width:70px; margin-top: -7px; border-radius:50%;"
+                     src="${contextPath}/avatar">
+            </a>
+            <div class="navbar-text">
+                <a class="navbar-text nav-link" href="/logout"><spring:message
+                        code="navbar.logout"/></a>
+            </div>
         </sec:authorize>
         <sec:authorize access="!isAuthenticated()">
             <div class="navbar-text">
